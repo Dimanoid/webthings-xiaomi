@@ -1,0 +1,58 @@
+{
+    "name": "@dimanoid/webthings-xiaomi",
+    "description": "Mozilla Web things gateway addon for Xiaomi smart devices",
+    "author": "Dmitry V Mukhin",
+    "version": "0.0.1",
+    "scripts": {
+        "publish": "npm publish dist/lib --access public"
+    },
+    "keywords": [
+        "mozilla",
+        "iot",
+        "adapter",
+        "xiaomi"
+    ],
+    "homepage": "https://github.com/Dimanoid/webthings-xiaomi",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Dimanoid/webthings-xiaomi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Dimanoid/webthings-xiaomi/issues"
+    },
+    "devDependencies": {},
+    "moziot": {
+        "api": {
+            "min": 2,
+            "max": 2
+        },
+        "type": "adapter",
+        "plugin": true,
+        "exec": "{nodeLoader} {path}",
+        "config": {
+            "token": "",
+            "address": "0.0.0.0",
+            "port": 9898
+        },
+        "schema": {
+            "type": "object",
+            "required": [
+                "token",
+                "address",
+                "port"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "number"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
