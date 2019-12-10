@@ -27,5 +27,31 @@
     "short_name": "Xiaomi",
     "version": "0.0.1",
     "web_accessible_resources": [
-    ]
+    ],
+    "options": {
+        "default": {
+            "token": "",
+            "address": "0.0.0.0",
+            "port": 9898
+        },
+        "schema": {
+            "type": "object",
+            "required": [
+                "token",
+                "address",
+                "port"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "number"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 }

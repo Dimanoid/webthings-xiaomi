@@ -1,6 +1,6 @@
 'use strict';
 
-import { Adapter, Device, Property } from 'gateway-addon';
+const { Adapter, Device, Property } = require('gateway-addon');
 
 // let ExampleAPIHandler = null;
 // try {
@@ -178,4 +178,4 @@ class ExampleAdapter extends Adapter {
     }
 }
 
-export default ExampleAdapter;
+module.exports = ExampleAdapter;
