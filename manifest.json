@@ -43,13 +43,19 @@
             ],
             "properties": {
                 "address": {
-                    "type": "string"
+                    "type": "string",
+                    "title": "Bind to address",
+                    "default": "0.0.0.0"
                 },
                 "port": {
-                    "type": "number"
+                    "type": "number",
+                    "title": "Gateway port",
+                    "default": 9898
                 },
                 "token": {
-                    "type": "string"
+                    "type": "string",
+                    "title": "Password",
+                    "description": "How to get the password: https://www.domoticz.com/wiki/Xiaomi_Gateway_(Aqara)"
                 }
             }
         }

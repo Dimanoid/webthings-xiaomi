@@ -29,6 +29,11 @@
         },
         "type": "adapter",
         "plugin": true,
-        "exec": "{nodeLoader} {path}"
+        "exec": "{nodeLoader} {path}",
+        "config": {
+            "token": "",
+            "address": "0.0.0.0",
+            "port": 9898
+        }
     }
 }
