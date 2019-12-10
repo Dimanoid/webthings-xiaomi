@@ -20,7 +20,7 @@
         }
     },
     "homepage_url": "https://github.com/Dimanoid/webthings-xiaomi",
-    "id": "dm-webthings-xiaomi",
+    "id": "webthings-xiaomi",
     "license": "MIT",
     "manifest_version": 1,
     "name": "Xiaomi Adapter",
