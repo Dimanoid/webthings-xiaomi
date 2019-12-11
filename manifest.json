@@ -29,7 +29,7 @@
     "web_accessible_resources": [
     ],
     "options": {
-        "default": {
+        "config": {
             "token": "",
             "address": "0.0.0.0",
             "port": 9898
