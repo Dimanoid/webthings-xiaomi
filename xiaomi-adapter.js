@@ -89,7 +89,7 @@ class XiaomiAdapter extends Adapter {
             console.warn('Wrong or empty config values.');
             return;
         }
-        hub = new Hub({
+        const hub = new Hub({
             port: this.config.port,
             bind: this.config.address,
             key: this.config.token,
