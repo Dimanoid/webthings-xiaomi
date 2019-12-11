@@ -1,6 +1,7 @@
 'use strict';
 
 const { Adapter, Device, Property } = require('gateway-addon');
+const { Hub, Devices } = require('./lib/Hub');
 
 let ExampleAPIHandler = null;
 // try {
@@ -38,7 +39,7 @@ class ExampleProperty extends Property {
     }
 }
 
-class ExampleDevice extends Device {
+class XiaomiDevice extends Device {
     constructor(adapter, id, deviceDescription) {
         super(adapter, id);
         this.name = deviceDescription.name;
@@ -65,92 +66,73 @@ class ExampleDevice extends Device {
 class XiaomiAdapter extends Adapter {
     constructor(addonManager, manifest) {
         super(addonManager, 'XiaomiAdapter', manifest.name);
+
         addonManager.addAdapter(this);
 
-        const config = manifest.moziot.config;
-        console.log('config:', config)
+        console.log('config:', manifest.moziot.config)
+        if (!(this.config.port > 0 && this.config.address && this.config.token)) {
+            console.warn('Wrong or empty config values.');
+            return;
+        }
 
-        if (!this.devices['example-plug']) {
-            const device = new ExampleDevice(this, 'example-plug', {
-                name: 'Example Plug',
-                '@type': ['OnOffSwitch', 'SmartPlug'],
-                description: 'Example Device',
-                properties: {
-                    on: {
-                        '@type': 'OnOffProperty',
-                        label: 'On/Off',
-                        name: 'on',
-                        type: 'boolean',
-                        value: false,
+        this.config = manifest.moziot.config;
+
+        // if (ExampleAPIHandler) {
+        //     this.apiHandler = new ExampleAPIHandler(addonManager, this);
+        // }
+    }
+
+    startPairing(timeout) {
+        console.log('startPairing, timeout:', timeout);
+        hub = new Hub({
+            port: this.config.port,
+            bind: this.config.address,
+            key: this.config.token,
+            keys: {},
+            interval: 30000
+        });
+
+        hub.on('message', msg => {
+            console.log('message: ' + JSON.stringify(msg));
+        });
+
+        hub.on('warning', msg => console.warn(msg));
+
+        hub.on('error', error => {
+            console.error(error);
+        });
+
+        hub.on('device', (device, name) => {
+            console.log('NEW device: ', device);
+            if (!this.devices[device.sid]) {
+                const device = new XiaomiDevice(this, device.sid, {
+                    name: name,
+                    '@type': ['OnOffSwitch', 'SmartPlug'],
+                    description: 'Example Device',
+                    properties: {
+                        on: {
+                            '@type': 'OnOffProperty',
+                            label: 'On/Off',
+                            name: 'on',
+                            type: 'boolean',
+                            value: false,
+                        },
                     },
-                },
-            });
+                });
 
-            this.handleDeviceAdded(device);
-        }
-
-        if (ExampleAPIHandler) {
-            this.apiHandler = new ExampleAPIHandler(addonManager, this);
-        }
-    }
-
-    /**
-     * Example process to add a new device to the adapter.
-     *
-     * The important part is to call: `this.handleDeviceAdded(device)`
-     *
-     * @param {String} deviceId ID of the device to add.
-     * @param {String} deviceDescription Description of the device to add.
-     * @return {Promise} which resolves to the device added.
-     */
-    addDevice(deviceId, deviceDescription) {
-        return new Promise((resolve, reject) => {
-            if (deviceId in this.devices) {
-                reject(`Device: ${deviceId} already exists.`);
-            } else {
-                const device = new ExampleDevice(this, deviceId, deviceDescription);
                 this.handleDeviceAdded(device);
-                resolve(device);
             }
         });
-    }
 
-    /**
-     * Example process ro remove a device from the adapter.
-     *
-     * The important part is to call: `this.handleDeviceRemoved(device)`
-     *
-     * @param {String} deviceId ID of the device to remove.
-     * @return {Promise} which resolves to the device removed.
-     */
-    removeDevice(deviceId) {
-        return new Promise((resolve, reject) => {
-            const device = this.devices[deviceId];
-            if (device) {
-                this.handleDeviceRemoved(device);
-                resolve(device);
-            } else {
-                reject(`Device: ${deviceId} not found.`);
-            }
+        hub.on('data', (sid, type, data) => {
+            console.log('data: ' + sid + '(' + type + '): ' + JSON.stringify(data));
         });
+
+        hub.listen();
     }
 
-    /**
-     * Start the pairing/discovery process.
-     *
-     * @param {Number} timeoutSeconds Number of seconds to run before timeout
-     */
-    startPairing(_timeoutSeconds) {
-        console.log('XiaomiAdapter:', this.name,
-            'id', this.id, 'pairing started');
-    }
-
-    /**
-     * Cancel the pairing/discovery process.
-     */
     cancelPairing() {
-        console.log('XiaomiAdapter:', this.name, 'id', this.id,
-            'pairing cancelled');
+        console.log('XiaomiAdapter:', this.name, 'id', this.id, 'pairing cancelled');
     }
 
     /**
