@@ -69,13 +69,14 @@ class XiaomiAdapter extends Adapter {
 
         addonManager.addAdapter(this);
 
-        console.log('config:', manifest.moziot.config)
-        if (!(this.config.port > 0 && this.config.address && this.config.token)) {
+        const cfg = manifest.moziot.config
+        console.log('config:', cfg)
+        if (!(cfg.port > 0 && cfg.address && cfg.token)) {
             console.warn('Wrong or empty config values.');
             return;
         }
 
-        this.config = manifest.moziot.config;
+        this.config = cfg;
 
         // if (ExampleAPIHandler) {
         //     this.apiHandler = new ExampleAPIHandler(addonManager, this);
@@ -83,7 +84,11 @@ class XiaomiAdapter extends Adapter {
     }
 
     startPairing(timeout) {
-        console.log('startPairing, timeout:', timeout);
+        console.log('startPairing, timeout:', timeout, this.config);
+        if (!this.config) {
+            console.warn('Wrong or empty config values.');
+            return;
+        }
         hub = new Hub({
             port: this.config.port,
             bind: this.config.address,
