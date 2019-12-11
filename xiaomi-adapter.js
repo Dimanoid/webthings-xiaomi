@@ -2,7 +2,7 @@
 
 const { Adapter, Device, Property } = require('gateway-addon');
 
-// let ExampleAPIHandler = null;
+let ExampleAPIHandler = null;
 // try {
 //     ExampleAPIHandler = require('./example-api-handler');
 // } catch (e) {
