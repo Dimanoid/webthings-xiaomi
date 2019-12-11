@@ -21,19 +21,6 @@
     "bugs": {
         "url": "https://github.com/Dimanoid/webthings-xiaomi/issues"
     },
-    "devDependencies": {},
-    "moziot": {
-        "api": {
-            "min": 2,
-            "max": 2
-        },
-        "type": "adapter",
-        "plugin": true,
-        "exec": "{nodeLoader} {path}",
-        "config": {
-            "token": "",
-            "address": "0.0.0.0",
-            "port": 9898
-        }
+    "devDependencies": {
     }
 }

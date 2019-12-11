@@ -44,13 +44,11 @@
             "properties": {
                 "address": {
                     "type": "string",
-                    "title": "Bind to address",
-                    "default": "0.0.0.0"
+                    "title": "Bind to address"
                 },
                 "port": {
                     "type": "number",
-                    "title": "Gateway port",
-                    "default": 9898
+                    "title": "Gateway port"
                 },
                 "token": {
                     "type": "string",

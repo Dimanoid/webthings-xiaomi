@@ -62,10 +62,13 @@ class ExampleDevice extends Device {
     }
 }
 
-class ExampleAdapter extends Adapter {
+class XiaomiAdapter extends Adapter {
     constructor(addonManager, manifest) {
-        super(addonManager, 'ExampleAdapter', manifest.name);
+        super(addonManager, 'XiaomiAdapter', manifest.name);
         addonManager.addAdapter(this);
+
+        const config = manifest.moziot.config;
+        console.log('config:', config)
 
         if (!this.devices['example-plug']) {
             const device = new ExampleDevice(this, 'example-plug', {
@@ -138,7 +141,7 @@ class ExampleAdapter extends Adapter {
      * @param {Number} timeoutSeconds Number of seconds to run before timeout
      */
     startPairing(_timeoutSeconds) {
-        console.log('ExampleAdapter:', this.name,
+        console.log('XiaomiAdapter:', this.name,
             'id', this.id, 'pairing started');
     }
 
@@ -146,7 +149,7 @@ class ExampleAdapter extends Adapter {
      * Cancel the pairing/discovery process.
      */
     cancelPairing() {
-        console.log('ExampleAdapter:', this.name, 'id', this.id,
+        console.log('XiaomiAdapter:', this.name, 'id', this.id,
             'pairing cancelled');
     }
 
@@ -156,13 +159,13 @@ class ExampleAdapter extends Adapter {
      * @param {Object} device Device to unpair with
      */
     removeThing(device) {
-        console.log('ExampleAdapter:', this.name, 'id', this.id,
+        console.log('XiaomiAdapter:', this.name, 'id', this.id,
             'removeThing(', device.id, ') started');
 
         this.removeDevice(device.id).then(() => {
-            console.log('ExampleAdapter: device:', device.id, 'was unpaired.');
+            console.log('XiaomiAdapter: device:', device.id, 'was unpaired.');
         }).catch((err) => {
-            console.error('ExampleAdapter: unpairing', device.id, 'failed');
+            console.error('XiaomiAdapter: unpairing', device.id, 'failed');
             console.error(err);
         });
     }
@@ -173,9 +176,9 @@ class ExampleAdapter extends Adapter {
      * @param {Object} device Device that is currently being paired
      */
     cancelRemoveThing(device) {
-        console.log('ExampleAdapter:', this.name, 'id', this.id,
+        console.log('XiaomiAdapter:', this.name, 'id', this.id,
             'cancelRemoveThing(', device.id, ')');
     }
 }
 
-module.exports = ExampleAdapter;
+module.exports = XiaomiAdapter;
